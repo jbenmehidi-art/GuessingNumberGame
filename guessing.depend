@@ -1,0 +1,31 @@
+# depslib dependency file v1.0
+1781559718 source:c:\users\jbenm\desktop\files\guessinggame\guessing\fun.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<ctype.h>
+	<string.h>
+	"header.h"
+
+1781559766 source:c:\users\jbenm\desktop\files\guessinggame\guessing\main.c
+	<stdio.h>
+	<stdlib.h>
+	<time.h>
+	<ctype.h>
+	<windows.h>
+	"header.h"
+
+1781559790 c:\users\jbenm\desktop\files\guessinggame\guessing\header.h
+	"ui.h"
+
+1781559820 c:\users\jbenm\desktop\files\guessinggame\guessing\ui.h
+	<windows.h>
+
+1781559839 source:c:\users\jbenm\desktop\files\guessinggame\guessing\ui.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<windows.h>
+	<conio.h>
+	"ui.h"
+
