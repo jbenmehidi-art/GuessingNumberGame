@@ -23,7 +23,7 @@
 #define C_LYELLOW      14
 #define C_BWHITE       15
 
-/* combine background + foreground -> (bg << 4) | fg */
+/* Macro to combine background and foreground colors -> (bg << 4) | fg */
 #define BG_FG(bg, fg) (((bg) << 4) | (fg))
 
 /* ===================================================

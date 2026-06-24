@@ -8,16 +8,20 @@
 /* ===================================================
    Basic console control
    =================================================== */
+
+/* Changes the console text and background color */
 void setColor(int color)
 {
     SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), (WORD)color);
 }
 
+/* Resets the text color back to standard white */
 void resetColor(void)
 {
     setColor(C_WHITE);
 }
 
+/* Hides the console cursor for smoother visual elements/menus */
 void hideCursor(void)
 {
     CONSOLE_CURSOR_INFO info;
@@ -26,6 +30,7 @@ void hideCursor(void)
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 }
 
+/* Restores the visibility of the console cursor */
 void showCursor(void)
 {
     CONSOLE_CURSOR_INFO info;
@@ -34,6 +39,7 @@ void showCursor(void)
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &info);
 }
 
+/* Clears the current line in the console terminal */
 void clearLine(void)
 {
     printf("\r                                                                                \r");
@@ -42,6 +48,8 @@ void clearLine(void)
 /* ===================================================
    Animations
    =================================================== */
+
+/* Displays text letter-by-letter with a typewriter effect */
 void typeText(const char *text, int color, int delayMs)
 {
     setColor(color);
@@ -54,6 +62,7 @@ void typeText(const char *text, int color, int delayMs)
     resetColor();
 }
 
+/* Simulates a filling progress bar (#) with a specific percentage output */
 void loadingBar(const char *message, int color)
 {
     setColor(color);
@@ -72,6 +81,7 @@ void loadingBar(const char *message, int color)
     Sleep(150);
 }
 
+/* Displays a quick spinning loading wheel animation */
 void spinner(const char *message, int cycles, int color)
 {
     const char frames[4] = { '|', '/', '-', '\\' };
@@ -86,13 +96,14 @@ void spinner(const char *message, int cycles, int color)
     resetColor();
 }
 
+/* Plays a flashy color-changing win sequence accompanied by audio beeps */
 void winAnimation(void)
 {
     int colors[] = { C_LYELLOW, C_LGREEN, C_LCYAN, C_LMAGENTA, C_LRED, C_BWHITE };
     for (int i = 0; i < 10; i++)
     {
         setColor(colors[i % 6]);
-        printf("\r   *** YOU WIN! ***   ");
+        printf("\r   *** YOU WIN! *** ");
         fflush(stdout);
         Beep(600 + i * 80, 80);
         Sleep(90);
@@ -101,6 +112,7 @@ void winAnimation(void)
     resetColor();
 }
 
+/* Plays a blinking Game Over screen with descending frequency audio tones */
 void loseAnimation(void)
 {
     for (int i = 0; i < 4; i++)
@@ -121,6 +133,8 @@ void loseAnimation(void)
 /* ===================================================
    Layout helpers
    =================================================== */
+
+/* Draws the global game title header banner box */
 void drawHeaderBanner(void)
 {
     setColor(C_LCYAN);
@@ -134,6 +148,7 @@ void drawHeaderBanner(void)
     resetColor();
 }
 
+/* Draws a clean custom separator horizontal line */
 void drawSeparator(int color)
 {
     setColor(color);
@@ -141,6 +156,7 @@ void drawSeparator(int color)
     resetColor();
 }
 
+/* Draws a flexible, well-aligned boxed frame containing text info rows */
 void drawInfoBox(const char *title, const char *lines[], int lineCount,
                  int titleColor, int borderColor)
 {
@@ -184,6 +200,8 @@ void drawInfoBox(const char *title, const char *lines[], int lineCount,
 /* ===================================================
    Interactive menu ("buttons")
    =================================================== */
+
+/* Renders an interactive navigational menu allowing keyboard button highlights */
 int showMenu(const char *title, const char *options[], int optionCount, int titleColor)
 {
     int selected = 0;
@@ -200,10 +218,12 @@ int showMenu(const char *title, const char *options[], int optionCount, int titl
         printf("\n   %s\n\n", title);
         resetColor();
 
+        /* Loop through options to highlight the current selection index */
         for (int i = 0; i < optionCount; i++)
         {
             if (i == selected)
             {
+                /* Inverted or bright background color choice for the active button */
                 setColor(BG_FG(C_GREEN, C_BWHITE));
                 printf("    [ %d ]  %-40s", i + 1, options[i]);
                 resetColor();
@@ -226,19 +246,19 @@ int showMenu(const char *title, const char *options[], int optionCount, int titl
 
         key = _getch();
 
-        if (key == 224 || key == 0) /* extended key prefix (arrows) */
+        if (key == 224 || key == 0) /* Handling extended key codes (Arrow Keys) */
         {
             key = _getch();
-            if (key == 72) /* Up */
+            if (key == 72) /* Up Arrow pressed */
                 selected = (selected - 1 + optionCount) % optionCount;
-            else if (key == 80) /* Down */
+            else if (key == 80) /* Down Arrow pressed */
                 selected = (selected + 1) % optionCount;
         }
-        else if (key == 13) /* Enter */
+        else if (key == 13) /* Enter Key pressed */
         {
             break;
         }
-        else if (key >= '1' && key <= '9' && (key - '1') < optionCount)
+        else if (key >= '1' && key <= '9' && (key - '1') < optionCount) /* Numeric direct selection */
         {
             selected = key - '1';
             break;
